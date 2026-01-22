@@ -1,0 +1,149 @@
+Product Requirement Document v2: Agent-Sync Context Hub
+
+1. Vision & Core Philosophy
+
+Vision: To provide a "Universal Neural Layer" for software repositories. The Agent-Sync Context Hub solves the problem of "Agent Amnesia" and "IDE Fragmentation" by providing a single, agnostic source of truth that forces every AI agent—regardless of the tool or IDE—to work within the exact same set of project-specific rules, skills, and architectural intents.
+
+Core Philosophy:
+
+Agnosticism: Not tied to a single IDE (Cursor) or Agent (Claude).
+
+Intent-First: No code is generated without a verified architectural "Intent."
+
+Artifact-Driven: No task is "done" without a verifiable proof-of-work log.
+
+Context-Aware: Rules are generated based on the actual "Anatomy" and "Metabolism" of the repo.
+
+2. Intelligence Architecture: The Triple-Stream Analysis
+
+The generator uses a multi-prompt orchestration to synthesize a project's state from three distinct data streams:
+
+A. The Anatomy Stream (Structure)
+
+Input: Project directory tree (e.g., tree -L 3 or ls -R).
+
+Logic: Gemini analyzes the tree to detect monorepos, microservices, and specialized folders (e.g., /infra, /scripts, /docs).
+
+Output: Generates folder-specific "Skills" files in .agent/skills/ so agents act as experts in that specific directory.
+
+B. The Metabolism Stream (Capabilities)
+
+Input: Dependency files (e.g., package.json, requirements.txt, go.mod, pom.xml, environment.yml).
+
+Logic: Detects the actual technology stack and specific libraries.
+
+Output: Injects "Allowed Dependencies" into the rules to prevent "hallucinated libraries" and suggests relevant MCP (Model Context Protocol) servers.
+
+C. The Intent Stream (Preferences)
+
+Input: Custom user prompts (e.g., "Use functional programming," "Strict TDD," "Tailwind only").
+
+Logic: Injects human-level stylistic constraints into the global persona.
+
+3. The ".agent" Ecosystem: Deliverables
+
+A. The Brain (.agent/)
+
+rules.json: The core global persona. Defines the "Senior Engineer" role, philosophical constraints, and prohibited patterns.
+
+skills/: A directory of Markdown files (e.g., api-standards.md, ui-patterns.md) that agents are instructed to reference when working in specific sub-directories.
+
+mcp_config.json: Pre-configured tool definitions for GitHub, Filesystem, Browser, and database connectivity.
+
+SESSION_HANDOFF.md: A standardized state-saving template to maintain context when switching between agents (e.g., from Cursor to Claude Code).
+
+B. The Compatibility Layer (Bridges)
+
+Automated generation of tool-specific entry points that point back to the .agent source of truth:
+
+Cursor: .cursorrules (JSON or Text format).
+
+GitHub Copilot: .github/copilot-instructions.md.
+
+Google Antigravity: .antigravity/agent.yaml.
+
+Claude Code: .claude.json.
+
+Windsurf: .windsurfrules.
+
+JetBrains AI: Custom instructions snippet for the AI assistant panel.
+
+C. Workflow & Governance
+
+SPEC.md: The living blueprint. Agents must update the spec before coding.
+
+TASKS.md: The atomic task list. Agents must mark tasks as [IN PROGRESS] before starting.
+
+Git Rules: Enforced naming conventions for branches (agent/feature-name) and Conventional Commits.
+
+PR Templates: .github/pull_request_template.md requiring "Artifact Proof" (test results/logs).
+
+4. Feature Matrix (MVP vs. Advanced)
+
+Module
+
+Priority
+
+Description
+
+Context Hub UI
+
+Core
+
+Multi-textarea interface for Tree, Dependencies, and Intent inputs.
+
+Multi-Bridge Gen
+
+Core
+
+Concurrent generation of config for 5+ AI tools.
+
+Folder-Level Skills
+
+High
+
+Gemini generates custom .md skill files based on specific folder paths.
+
+MCP Auto-Suggester
+
+High
+
+Tooling configs suggested based on package.json detection.
+
+Readiness Score
+
+Medium
+
+A visual score (0-100) based on how "AI-Ready" the project is.
+
+Self-Verification
+
+Medium
+
+Generates TEST_YOUR_AGENT.md with challenge prompts to test rule compliance.
+
+Setup Bootstrapper
+
+Medium
+
+A setup.sh script to automate file placement and symlinking.
+
+Auto-Migration
+
+Roadmap
+
+Import an existing .cursorrules and convert it into the agnostic .agent format.
+
+5. Technical Stack & Safety
+
+Intelligence: gemini-2.5-flash-preview-09-2025 for high-token context analysis.
+
+Frontend: React/Tailwind for a high-fidelity "IDE-like" dashboard.
+
+Security:
+
+No data persistence (all processing happens in-session).
+
+"Secret Guardian" Rule: Generated rules explicitly prohibit agents from reading .env files even if found in the tree.
+
+Export: Dynamic ZIP generation using JSZip for a single-click repo injection.
