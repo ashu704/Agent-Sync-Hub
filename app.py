@@ -397,7 +397,7 @@ ls -la your-project/.agent/
         
         with col_download:
             zip_buffer = io.BytesIO()
-            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIPFILE_DEFLATED) as zf:
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
                 for file_path, content in st.session_state.generated_files.items():
                     zf.writestr(file_path, content)
             
