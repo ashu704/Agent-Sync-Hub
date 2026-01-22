@@ -1,0 +1,201 @@
+Product Requirement Document: Agent-Sync Ecosystem Generator
+
+1. Vision
+
+To provide an Intelligent Project Architect for AI-augmented software engineering. The tool analyzes a project's existing anatomy and generates a comprehensive, multi-IDE synchronization layer that ensures any AI agent (Cursor, Copilot, Windsurf, Claude Code, Google Antigravity) understands the project's specific "Skills," "Rules," and "Workflows" without manual setup. By centralizing repository intelligence, we eliminate "agent fragmentation" and ensure consistent output quality regardless of the chosen interface.
+
+2. Technical Scope Expansion
+
+The tool shifts from a static config generator to a Context-Aware Bootstrapper. It functions as a "Nervous System" for the repository, synthesizing data from three primary streams:
+
+Anatomy: The physical file structure and modularity.
+
+Metabolism: Dependencies, tech stack, and external library capabilities.
+
+Intent: Architectural patterns (TDD, DDD), design systems, and state management preferences.
+
+3. Functional Requirements
+
+A. Intelligence-Driven Analysis
+
+Recursive Project Anatomy Scan: Deep analysis of directory structures to identify monorepos, microservices, and specialized modules (e.g., /infra, /frontend, /shared).
+
+Automated Stack Inference: Real-time parsing of package.json, requirements.txt, go.mod, or pom.xml to define "Allowed Capabilities" in the generated rules.
+
+Sub-Module Skill Generation: Automated creation of per-folder expertise files.
+
+Example: Detecting a /tests folder triggers the generation of a "Quality Assurance Expert" skill file emphasizing TDD and coverage standards.
+
+Design System & State Mapping: Dedicated inputs for Design Systems (Tailwind, Shadcn) and State Management (Zustand, Redux) to ensure agents generate compliant code snippets.
+
+B. The "Agnostic" Configuration Layer (.agent/)
+
+rules.json: The master behavioral core. Enforces "Intent-First" development and "Artifact-Driven" verification.
+
+skills/: A library of directory-specific expertise in Markdown format.
+
+mcp-config.json: Context-aware Model Context Protocol configurations.
+
+SESSION_HANDOFF.md: A formalized state-persistence template to prevent "context amnesia" when switching between agents or starting new chat threads.
+
+C. Universal IDE Bridges
+
+Cursor: Auto-generated .cursorrules.
+
+GitHub Copilot: .github/copilot-instructions.md.
+
+Google Antigravity: .antigravity/agent.yaml.
+
+Claude Code: .claude.json.
+
+Windsurf: .windsurfrules.
+
+D. Workflow & Git Governance
+
+The Flow Protocol: Automated rule-set for branching (agent/feature-name), atomic commits, and conventional commit enforcement.
+
+Artifact Verification: Mandatory logic requiring agents to run linting/testing and attach logs to Pull Requests.
+
+GitHub Templates: Tailored .github/pull_request_template.md and ISSUE_TEMPLATE.md.
+
+4. UI/UX Design Guidelines
+
+A. Design Philosophy
+
+The interface should feel like a "Command Center" for an architect. It should be high-contrast, professional, and dense with information without being cluttered.
+
+Color Palette: * Primary: Deep Slate (#05070a) / Dark Navy.
+
+Accent: Electric Blue (#2563eb) for primary actions.
+
+System Status: Emerald for "Ready," Amber for "Processing," Ruby for "Errors."
+
+Typography: * Headings: Inter (Bold) for readability.
+
+Code/Data: JetBrains Mono or Fira Code for a technical feel.
+
+Visual depth: Use glassmorphism (backdrop-filter: blur) and subtle borders (border-white/5) to create layers.
+
+B. Layout Components
+
+Context Terminal: A split-view editor for pasting Tree and Dependency data.
+
+Intelligence Progress Bar: A "Readiness Score" (0-100%) that updates in real-time as the user provides more context (Tree + Deps + Intent).
+
+Virtual File Explorer: A sidebar that allows users to navigate the generated .agent folder before downloading.
+
+Action Dock: A sticky footer or sidebar for "Generate," "Download ZIP," and "Preview Bridges."
+
+5. Detailed User Flow
+
+Project Identification:
+
+User enters the landing view.
+
+Paste directory tree into the Anatomy pane.
+
+Paste dependency file into the Metabolism pane.
+
+Intent Specification:
+
+Select Tech Stack (Frontend/Backend/Language).
+
+Define Architectural Style (e.g., "TDD-Focused Clean Architecture").
+
+Input Design System and State Management preferences.
+
+Synthesis Engine:
+
+User clicks "Architect Context Hub".
+
+Gemini 2.5 Flash analyzes the streams and generates the file hierarchy.
+
+UI displays a loading state with "Agentic Reasoning" logs (e.g., "Detecting React modules...", "Defining TDD rules...").
+
+Review & Refinement:
+
+User explores the Virtual File Explorer.
+
+Clicking a file (e.g., rules.json) opens it in a syntax-highlighted editor.
+
+User can toggle IDE Bridges on/off.
+
+Deployment:
+
+User selects "Download Bundle (.zip)".
+
+Optionally, a one-liner curl command is displayed for terminal-based setup.
+
+Tool provides a "Test Your Agent" guide with sample prompts to verify compliance.
+
+6. Technical Architecture & Features
+
+A. Core Engine
+
+Intelligence: Utilizes gemini-2.5-flash-preview-09-2025 for large-context architectural mapping.
+
+State Management: React-based local state.
+
+External Libs: JSZip for bundling and FileSaver.js for local downloads.
+
+B. Feature Categorization
+
+Feature
+
+Category
+
+Description
+
+Neural Core Gen
+
+MVP
+
+Agnostic rules.json based on intent.
+
+IDE Bridges
+
+MVP
+
+Support for 5 major AI environments.
+
+Metabolism Parsing
+
+Core
+
+Auto-detection of rules from package.json.
+
+Readiness Score
+
+Core
+
+Real-time UX feedback on context completeness.
+
+Sub-Module Skills
+
+Advanced
+
+Per-folder expertise generation via directory analysis.
+
+MCP Auto-Config
+
+Advanced
+
+Tool suggestions based on identified stack.
+
+Handoff Protocol
+
+Advanced
+
+State-saving templates for multi-agent workflows.
+
+Self-Test Suite
+
+Roadmap
+
+"Prompt Challenges" to verify agent compliance.
+
+7. Security & Compliance
+
+Client-Side Processing: All analysis happens in-session; no project code or trees are stored on external servers.
+
+Secret Guardian: Generated rules explicitly forbid agents from reading or modifying .env files or other sensitive patterns identified in the Anatomy Scan.
