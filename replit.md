@@ -19,6 +19,7 @@ A React + TypeScript AI-powered context hub that generates agnostic .agent confi
 │       └── ExportPanel.tsx   # ZIP download and curl command
 ├── server/
 │   └── index.ts              # Express backend for AI API proxying
+├── app.py                    # Streamlit wrapper for deployment
 ├── index.html                # HTML entry point
 ├── vite.config.js            # Vite configuration
 ├── tsconfig.json             # TypeScript config (client)
@@ -29,7 +30,7 @@ A React + TypeScript AI-powered context hub that generates agnostic .agent confi
 ## Key Features
 - **Clean-Slate Light Theme**: Minimal white/gray backgrounds, subtle shadows, clean typography
 - **Two-Tier AI System**:
-  - Free: Perplexity Sonar-Pro (server-side API key)
+  - Free: Perplexity Sonar-Pro (server-side API key, 10 requests/hour limit)
   - Custom: User provides API key for OpenAI, Anthropic, Gemini, DeepSeek
 - **AI Models Supported**:
   - OpenAI: GPT-5, GPT-4o, GPT-4-turbo
@@ -42,20 +43,23 @@ A React + TypeScript AI-powered context hub that generates agnostic .agent confi
 - **Real-time AI Readiness Score**: Visual 0-100 score in sidebar
 - **File Explorer**: Browse generated files with syntax highlighting
 - **ZIP Export**: Download with curl command for terminal setup
+- **Rate Limiting**: 10 requests/hour per IP for free tier
 
 ## Technical Stack
 - **Frontend**: React 18 + TypeScript + Vite
 - **Backend**: Express + TypeScript (tsx)
-- **AI Integration**: OpenAI SDK (compatible with all providers)
+- **AI Integration**: OpenAI SDK (compatible with all providers via baseURL)
 - **Export**: JSZip + FileSaver
 - **Icons**: Lucide React
+- **Wrapper**: Streamlit (for Replit deployment)
 
 ## Running the Application
-The app runs with two processes:
-1. Vite dev server on port 5000 (frontend)
-2. Express API server on port 3001 (backend)
+The app runs with:
+1. Streamlit wrapper on port 5000 (serves the app)
+2. Vite dev server on port 5173 (React frontend, embedded via iframe)
+3. Express API server on port 3001 (backend)
 
-Command: `npm run dev` (runs both concurrently)
+Command: `streamlit run app.py --server.port 5000`
 
 ## Environment Variables
 - `PERPLEXITY_API_KEY`: Required for free tier (set as secret)
@@ -70,4 +74,5 @@ Command: `npm run dev` (runs both concurrently)
 - 2026-01-22: Rebuilt in React + TypeScript with clean-slate minimal light theme
 - 2026-01-22: Added two-tier AI system (free Perplexity, custom API keys)
 - 2026-01-22: Added support for OpenAI, Anthropic, Gemini, DeepSeek models
+- 2026-01-22: Added rate limiting (10 requests/hour per IP for free tier)
 - 2026-01-22: Express backend for secure API proxying

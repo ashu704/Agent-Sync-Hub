@@ -88,7 +88,7 @@ export function Sidebar({ state, providers, updateState }: SidebarProps) {
 
         {state.tier === 'free' && (
           <div className="free-info">
-            <p>Using Perplexity Sonar-Pro</p>
+            <p>Using Perplexity AI</p>
             <span>Powered by real-time web intelligence</span>
           </div>
         )}

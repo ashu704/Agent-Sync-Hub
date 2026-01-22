@@ -6,6 +6,33 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const rateLimitStore: Map<string, { count: number; resetTime: number }> = new Map();
+const FREE_TIER_LIMIT = 10;
+const FREE_TIER_WINDOW = 60 * 60 * 1000;
+
+function checkRateLimit(ip: string, isFree: boolean): { allowed: boolean; remaining: number; resetIn: number } {
+  if (!isFree) {
+    return { allowed: true, remaining: -1, resetIn: 0 };
+  }
+
+  const now = Date.now();
+  const key = `free:${ip}`;
+  const existing = rateLimitStore.get(key);
+
+  if (!existing || now > existing.resetTime) {
+    rateLimitStore.set(key, { count: 1, resetTime: now + FREE_TIER_WINDOW });
+    return { allowed: true, remaining: FREE_TIER_LIMIT - 1, resetIn: FREE_TIER_WINDOW };
+  }
+
+  if (existing.count >= FREE_TIER_LIMIT) {
+    return { allowed: false, remaining: 0, resetIn: existing.resetTime - now };
+  }
+
+  existing.count++;
+  rateLimitStore.set(key, existing);
+  return { allowed: true, remaining: FREE_TIER_LIMIT - existing.count, resetIn: existing.resetTime - now };
+}
+
 interface AIProvider {
   name: string;
   baseURL: string;
@@ -82,6 +109,18 @@ app.get('/api/providers', (_req, res) => {
 app.post('/api/analyze', async (req, res) => {
   try {
     const { provider, model, apiKey, streamType, content, context } = req.body;
+    
+    const isFree = provider === 'perplexity' && !apiKey;
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    const rateCheck = checkRateLimit(clientIp, isFree);
+    
+    if (!rateCheck.allowed) {
+      const minutes = Math.ceil(rateCheck.resetIn / 60000);
+      return res.status(429).json({ 
+        error: `Free tier limit reached. Try again in ${minutes} minutes or use your own API key.`,
+        resetIn: rateCheck.resetIn
+      });
+    }
 
     const prompts: Record<string, { system: string; user: string }> = {
       anatomy: {
@@ -143,6 +182,18 @@ Respond in JSON format with keys: style, architecture, bestPractices, workflow, 
 app.post('/api/generate', async (req, res) => {
   try {
     const { provider, model, apiKey, anatomy, metabolism, intent } = req.body;
+    
+    const isFree = provider === 'perplexity' && !apiKey;
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    const rateCheck = checkRateLimit(clientIp, isFree);
+    
+    if (!rateCheck.allowed) {
+      const minutes = Math.ceil(rateCheck.resetIn / 60000);
+      return res.status(429).json({ 
+        error: `Free tier limit reached. Try again in ${minutes} minutes or use your own API key.`,
+        resetIn: rateCheck.resetIn
+      });
+    }
 
     const systemPrompt = `You are an expert at generating AI coding assistant configurations. Based on the project analysis, generate a comprehensive .agent configuration that includes:
 
